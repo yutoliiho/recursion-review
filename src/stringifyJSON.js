@@ -9,27 +9,33 @@ var stringifyJSON = function (obj) {
   var res = '';
   // String, Boo, Number, undefined, null, array, obj
 
-  // if array
-  if (Array.isArray(obj)) {
+  if (obj === null) {
+    return 'null';
+  } else if (Array.isArray(obj)) {
     var result = [];
     for (var i = 0; i < obj.length; i++) {
       result.push(stringifyJSON(obj[i]));
     }
     res += '[' + result.join(',') + ']';
-
-    //if string
+  } else if (typeof obj === 'object') {
+    var result = [];
+    var keys = Object.keys(obj);
+    for (var key in obj) {
+      if (
+        typeof obj[key] === 'function' ||
+        typeof obj[key] === undefined ||
+        keys.length === 0
+      ) {
+        return '{}';
+      }
+      result.push(stringifyJSON(key) + ':' + stringifyJSON(obj[key]));
+    }
+    res += '{' + result.join(',') + '}';
   } else if (typeof obj === 'string') {
     res += '"' + obj + '"';
-  } else if (
-    typeof obj === 'number' ||
-    typeof obj === 'boolean' ||
-    obj === null
-  ) {
-    // Boo / Number / Null
-    // res += obj;
+  } else if (typeof obj === 'number' || typeof obj === 'boolean') {
     return '' + obj;
   }
-
   console.log(stringifyJSONs, res, typeof stringifyJSONs, typeof res);
   return res;
 };
