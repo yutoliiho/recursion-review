@@ -3,8 +3,23 @@
 //   return document.getElementsByClassName(className);
 // };
 
-// But instead we're going to implement it from scratch:
-var getElementsByClassName = function(className
-) {
-  // your code here
+//  You should use document.body, element.childNodes, and element.classList
+
+var getElementsByClassName = function (className) {
+  let body = document.body;
+  let res = [];
+  function findClassName(body) {
+    if (body.classList && body.classList.contains(className)) {
+      res.push(body);
+      console.log(body);
+      // console.log(res);
+    }
+    if (body.hasChildNodes()) {
+      for (let i = 0; i < body.childNodes.length; i++) {
+        findClassName(body.childNodes[i]);
+      }
+    }
+  }
+  findClassName(body);
+  return res;
 };
